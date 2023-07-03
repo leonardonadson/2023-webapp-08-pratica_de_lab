@@ -26,7 +26,7 @@ const AppNavBar = (props: any) => {
 
 const AppUFLista = (props : any) => {
   /*
-  // Tratar clique de forma manual:
+  // Tratar clique de forma manual: 
   //
   const tratarClique = (evento : any) => {
     console.log(evento.target.innerText);
