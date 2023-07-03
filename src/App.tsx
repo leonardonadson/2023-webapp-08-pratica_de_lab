@@ -1,15 +1,33 @@
-import { useState } from "react";
-import "./App.css";
+import { useState } from 'react';
+import './App.css'
+import axios from 'axios';
 
-const AppNavBar = () => {
-	return (
-		<div className="card">
-			<h1>Unidades Federativas</h1>
-		</div>
-	);
-};
+const api = axios.create({
+  baseURL: 'https://infoweb-api.vercel.app/',
+});
+
+const AppNavBar = (props: any) => {
+  const tratarClique = (e: any) => {
+    props.carregado(false);
+    api.get('/uf')
+      .then((resposta: any) => resposta.data.data)
+      .then((json) => props.mudar(json));
+  };
+
+  return (
+    <div className="card">
+      <h1>Unidades Federativas</h1>
+      {
+        props.carregando && (<button onClick={tratarClique}>Atualizar Lista de UFs</button>)
+      }
+    </div>
+  );
+}
 
 const AppUFLista = (props : any) => {
+  /*
+  // Tratar clique de forma manual:
+  //
   const tratarClique = (evento : any) => {
     console.log(evento.target.innerText);
     const sigla = evento.target.innerText;
@@ -20,17 +38,17 @@ const AppUFLista = (props : any) => {
     console.log(lista)
     props.mudar(lista[0])
   }
+  */
+
   return (
-    <ul>
-      {props.dados.map(
-          (item : any) => 
-          <li
-          key={item.sigla}
-          onClick={tratarClique}>
-            {item.sigla}
-          </li>
-        )}
-    </ul>
+    <div className="card">
+    {props.dados.map((item : any) => 
+    <button
+      key={item.sigla}
+      onClick={(e) => props.mudar(item)}>
+      {item.sigla}
+    </button>)}
+    </div>
   );
 };
 
@@ -38,28 +56,27 @@ const AppUFDetalhe = (props : any) => {
 
   return(
     <div className="card">
-      <p>{props.dados.sigla}</p>
-      <p>{props.dados.nome}</p>
+      <div>
+        <p>ID: {props.dados.id}</p>
+        <p>Sigla: {props.dados.sigla}</p>
+        <p>Nome: {props.dados.nome}</p>
+      </div>
     </div>
   );
 };
 
 const App = () => {
-  const [ufs, setUFs ] = useState([
-    {sigla: "RN", nome: "Rio Grande do Norte"}, 
-    {sigla: "CE", nome: "Ceará"},
-    {sigla: "PB", nome: "Paraíba"}, 
-  ])
-
   const [uf, setUF] = useState({
-    sigla: 'RN',
-    nome: 'Rio Grande do Norte'
-  })
-
+    id: '',
+    sigla: '', 
+    nome: ''
+  });
+  const [ufs, setUFs] = useState([]);
+  const [carregando, setCarregando] = useState(true);
 
   return (
 		<>
-			<AppNavBar />
+			<AppNavBar mudar ={setUFs} carregando={carregando} carregado = {setCarregando}/>
       <AppUFDetalhe dados = {uf}/>
       <AppUFLista dados = {ufs} mudar={setUF}/>
 		</>
