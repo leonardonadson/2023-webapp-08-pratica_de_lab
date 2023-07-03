@@ -10,39 +10,58 @@ const AppNavBar = () => {
 };
 
 const AppUFLista = (props : any) => {
+  const tratarClique = (evento : any) => {
+    console.log(evento.target.innerText);
+    const sigla = evento.target.innerText;
 
+    const lista = props.dados.filter(
+      (uf:any) => {return uf.sigla == sigla;}
+    )
+    console.log(lista)
+    props.mudar(lista[0])
+  }
   return (
     <ul>
-      {props.ufs.map(
-          (sigla : string) => <li key={sigla}>{sigla}</li>
-        )
-      }
+      {props.dados.map(
+          (item : any) => 
+          <li
+          key={item.sigla}
+          onClick={tratarClique}>
+            {item.sigla}
+          </li>
+        )}
     </ul>
   );
 };
 
 const AppUFDetalhe = (props : any) => {
+
   return(
-    <div>
-      <p>{props.uf.sigla}</p>
-      <p>{props.uf.nome}</p>
+    <div className="card">
+      <p>{props.dados.sigla}</p>
+      <p>{props.dados.nome}</p>
     </div>
   );
 };
 
 const App = () => {
-  const [ufs] = useState(["AC", "AL", "AM", "AP",]);
-  const [uf] = useState(  [
-    {sigla: "AC", nome: "Acre"}, {sigla: "AL", nome: "Alagoas"}, {sigla: "AM", nome: "Amazonas"}, {sigla: "AP", nome: "Amapá"}
+  const [ufs, setUFs ] = useState([
+    {sigla: "RN", nome: "Rio Grande do Norte"}, 
+    {sigla: "CE", nome: "Ceará"},
+    {sigla: "PB", nome: "Paraíba"}, 
   ])
+
+  const [uf, setUF] = useState({
+    sigla: 'RN',
+    nome: 'Rio Grande do Norte'
+  })
+
 
   return (
 		<>
 			<AppNavBar />
-      <AppUFLista
-      ufs = {ufs}
-      uf = {uf} />
-      <AppUFDetalhe uf = {uf}/>
+      <AppUFDetalhe dados = {uf}/>
+      <AppUFLista dados = {ufs} mudar={setUF}/>
 		</>
 	);
 };
