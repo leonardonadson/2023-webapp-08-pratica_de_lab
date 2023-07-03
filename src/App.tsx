@@ -56,11 +56,9 @@ const AppUFDetalhe = (props : any) => {
 
   return(
     <div className="card">
-      <div>
         <p>ID: {props.dados.id}</p>
         <p>Sigla: {props.dados.sigla}</p>
-        <p>Nome: {props.dados.nome}</p>
-      </div>
+	<p>Nome: {props.dados.nome}</p>
     </div>
   );
 };
@@ -75,11 +73,11 @@ const App = () => {
   const [carregando, setCarregando] = useState(true);
 
   return (
-		<>
-			<AppNavBar mudar ={setUFs} carregando={carregando} carregado = {setCarregando}/>
-      <AppUFDetalhe dados = {uf}/>
-      <AppUFLista dados = {ufs} mudar={setUF}/>
-		</>
+	<>
+	<AppNavBar mudar ={setUFs} carregando={carregando} carregado = {setCarregando}/>
+      	<AppUFDetalhe dados = {uf}/>
+      	<AppUFLista dados = {ufs} mudar={setUF}/>
+	</>
 	);
 };
 
