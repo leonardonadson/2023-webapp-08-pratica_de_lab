@@ -7,7 +7,7 @@ const api = axios.create({
 });
 
 const AppNavBar = (props: any) => {
-  const tratarClique = (e: any) => {
+  const tratarClique = () => {
     props.carregado(false);
     api.get('/uf')
       .then((resposta: any) => resposta.data.data)
@@ -45,7 +45,7 @@ const AppUFLista = (props : any) => {
     {props.dados.map((item : any) => 
     <button
       key={item.sigla}
-      onClick={(e) => props.mudar(item)}>
+      onClick={() => props.mudar(item)}>
       {item.sigla}
     </button>)}
     </div>
